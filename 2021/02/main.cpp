@@ -9,7 +9,7 @@
 
 namespace fs = std::filesystem;
 
-int main(int , char* [])
+int main(int, char *[])
 {
   const std::string path{"input.txt"};
   // std::vector<int> measurements {199, 200, 208, 210, 200, 207, 240, 269, 260, 263};
@@ -19,16 +19,20 @@ int main(int , char* [])
   std::string line;
   while (std::getline(infile, line))
   {
-      std::istringstream iss(line);
-      std::string a;
-      int b;
-      if (!(iss >> a >> b)) { break; } // error
+    std::istringstream iss(line);
+    std::string a;
+    int b;
+    if (!(iss >> a >> b))
+    {
+      break;
+    } // error
 
-      measurements.push_back({a, b});
+    measurements.push_back({a, b});
   }
   infile.close();
 
-  if (measurements.empty()) {
+  if (measurements.empty())
+  {
     std::cerr << "inputfile empty" << std::endl;
     return -1;
   }
@@ -40,16 +44,24 @@ int main(int , char* [])
   auto posHorizontal = 0;
   auto posDepth = 0;
 
-  for(auto val : measurements) {
-    const auto& [command, value] = val;
+  for (auto val : measurements)
+  {
+    const auto &[command, value] = val;
 
-    if(forward.compare(command) == 0) {
-        posHorizontal += value;
-    } else if (down.compare(command) == 0) {
-        posDepth += value;
-    }else if (up.compare(command) == 0) {
-        posDepth -= value;
-    } else {
+    if (forward.compare(command) == 0)
+    {
+      posHorizontal += value;
+    }
+    else if (down.compare(command) == 0)
+    {
+      posDepth += value;
+    }
+    else if (up.compare(command) == 0)
+    {
+      posDepth -= value;
+    }
+    else
+    {
       std::cerr << "unknown command " << command << std::endl;
     }
   }

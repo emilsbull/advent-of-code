@@ -8,7 +8,7 @@
 
 namespace fs = std::filesystem;
 
-int main(int , char* [])
+int main(int, char *[])
 {
   constexpr bool readFile = true;
 
@@ -18,44 +18,59 @@ int main(int , char* [])
 
   std::vector<std::tuple<std::string, int>> measurements;
 
-  if(readFile) {
+  if (readFile)
+  {
     const std::string path{"input.txt"};
     std::ifstream infile(path, std::ios::in);
     std::string line;
     while (std::getline(infile, line))
     {
-        std::istringstream iss(line);
-        std::string a;
-        int b;
-        if (!(iss >> a >> b)) { break; } // error
+      std::istringstream iss(line);
+      std::string a;
+      int b;
+      if (!(iss >> a >> b))
+      {
+        break;
+      } // error
 
-        measurements.push_back({a, b});
+      measurements.push_back({a, b});
     }
     infile.close();
 
-    if (measurements.empty()) {
+    if (measurements.empty())
+    {
       std::cerr << "inputfile empty" << std::endl;
       return -1;
     }
-  } else {
-    measurements.assign({{forward, 5}, {down, 5}, {forward, 8}, {up, 3}, {down,8}, {forward, 2}});
+  }
+  else
+  {
+    measurements.assign({{forward, 5}, {down, 5}, {forward, 8}, {up, 3}, {down, 8}, {forward, 2}});
   }
 
   auto posHorizontal = 0;
   auto posDepth = 0;
   auto aim = 0;
 
-  for(auto val : measurements) {
-    const auto& [command, value] = val;
+  for (auto val : measurements)
+  {
+    const auto &[command, value] = val;
 
-    if(forward.compare(command) == 0) {
-        posHorizontal += value;
-        posDepth += aim * value;
-    } else if (down.compare(command) == 0) {
-        aim += value;
-    }else if (up.compare(command) == 0) {
-        aim -= value;
-    } else {
+    if (forward.compare(command) == 0)
+    {
+      posHorizontal += value;
+      posDepth += aim * value;
+    }
+    else if (down.compare(command) == 0)
+    {
+      aim += value;
+    }
+    else if (up.compare(command) == 0)
+    {
+      aim -= value;
+    }
+    else
+    {
       std::cerr << "unknown command " << command << std::endl;
     }
   }
