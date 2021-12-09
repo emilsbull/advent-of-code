@@ -2,12 +2,9 @@
 #include <vector>
 #include <filesystem>
 #include <fstream>
-#include <sstream>
 #include <string>
-#include <tuple>
 #include <cstdint>
-#include <bitset>
-#include <regex>
+#include <map>
 
 #include "string_utils.h"
 
@@ -140,7 +137,8 @@ int main(int, char *[])
         break;
       }
     }
-    // get 1, 3, 4, 7, 8, 9, 6
+    // got 1, 4, 7, 8
+    // get 3, 9, 6
     // missing 0, 2, 5
     for (auto tInput : trainingData[i])
     {
@@ -170,7 +168,8 @@ int main(int, char *[])
         break;
       }
     }
-    // get 0, 1, 3, 4, 5, 6, 7, 8, 9,
+    // got 1, 3, 4, 6, 7, 8, 9
+    // get 0, 5
     // missing 2
     for (auto tInput : trainingData[i])
     {
@@ -195,7 +194,8 @@ int main(int, char *[])
         break;
       }
     }
-    // get 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    // got 0, 1, 3, 4, 5, 6, 7, 8, 9
+    // get 2
     for (auto tInput : trainingData[i])
     {
       uint8_t cryptNumber = toNumber(tInput);
