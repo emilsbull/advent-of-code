@@ -1,6 +1,13 @@
 set(TARGET_NAME "advent08")
+
+
 add_executable(${TARGET_NAME}
                 main.cpp)
+
+target_include_directories(${TARGET_NAME}
+PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../utils
+)
 
 target_link_libraries(${TARGET_NAME}
 PRIVATE
