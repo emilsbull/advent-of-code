@@ -13,7 +13,6 @@
 
 namespace fs = std::filesystem;
 
-
 int main(int, char *[])
 {
   constexpr bool readFile = true;
@@ -40,32 +39,19 @@ int main(int, char *[])
   auto sevens = 0;
   auto fours = 0;
   auto eights = 0;
-  for (auto i = 0U; i < input.size(); ++i)
+  for (auto digits : input)
   {
-    for (auto number : input[i])
-    {
-      switch (number.size())
-      {
-      case 2:
-        ones++;
-        break;
-      case 3:
-        sevens++;
-        break;
-      case 4:
-        fours++;
-        break;
-      case 7:
-        eights++;
-        break;
-
-      default:
-        break;
-      }
-    }
+    ones += count_if(digits.begin(), digits.end(), [](auto s)
+                     { return s.size() == 2; });
+    fours += count_if(digits.begin(), digits.end(), [](auto s)
+                      { return s.size() == 4; });
+    sevens += count_if(digits.begin(), digits.end(), [](auto s)
+                       { return s.size() == 3; });
+    eights += count_if(digits.begin(), digits.end(), [](auto s)
+                       { return s.size() == 7; });
   }
 
-  auto result = ones + fours + sevens+ eights;
+  auto result = ones + fours + sevens + eights;
   std::cout << "ones: " << ones << std::endl;
   std::cout << "fours: " << fours << std::endl;
   std::cout << "sevens: " << sevens << std::endl;
