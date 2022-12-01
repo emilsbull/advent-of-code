@@ -8,3 +8,4 @@ set(PROJECT_NAME "advent-of-code")
 project(${PROJECT_NAME})
 
 add_subdirectory(2021)
+add_subdirectory(2022)
