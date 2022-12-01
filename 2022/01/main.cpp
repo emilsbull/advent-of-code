@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <map>
 #include <numeric>
+#include <iterator>
 
 #include "string_utils.h"
 
@@ -22,27 +23,39 @@ int main(int, char *[])
   std::ifstream infile(path, std::ios::in);
   std::string line;
 
-  std::vector<int> kCal;
+  std::vector<int> elves;
 
-  int curentkCal = 0;
+  int calories = 0;
 
   while (std::getline(infile, line))
   {
     utils::trim(line);
     if (line.empty())
     {
-      kCal.emplace_back(curentkCal);
-      curentkCal = 0;
+      elves.emplace_back(calories);
+      calories = 0;
       continue;
     }
-
-    curentkCal += std::stoi(line);
+    calories += std::stoi(line);
   }
 
-  auto maxIdx = std::max_element(kCal.begin(), kCal.end());
+  if (calories != 0)
+  {
+    elves.emplace_back(calories);
+    calories = 0;
+  }
+
+  auto maxElvinIter = std::max_element(elves.begin(), elves.end());
 
   std::cout << "---------------------" << std::endl;
-  std::cout << "element:" << std::distance(kCal.begin(), maxIdx)+1 << std::endl;
-  std::cout << "value:" << *maxIdx << std::endl;
+  std::cout << "elf:" << std::distance(elves.begin(), maxElvinIter) + 1 << std::endl;
+  std::cout << "carried calories:" << *maxElvinIter << std::endl;
+
+  std::sort(elves.begin(), elves.end(), std::greater<int>());
+
+  auto sum = elves[0] + elves[1] + elves[2];
+
+  std::cout << "Top 3 calories:" << sum << std::endl;
+
   return 0;
 }
