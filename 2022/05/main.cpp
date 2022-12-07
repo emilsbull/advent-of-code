@@ -17,23 +17,28 @@
 
 namespace fs = std::filesystem;
 
-struct Action {
+struct Action
+{
   int n;
   int from;
   int to;
 };
 
-class Stacks {
-  public:
-  Stacks(std::vector<std::string> input) {
+class Stacks
+{
+public:
+  Stacks(std::vector<std::string> input)
+  {
     auto numbers = input.back();
     input.pop_back();
 
-    for(size_t i = 0; i < numbers.size(); ++i) {
+    for (size_t i = 0; i < numbers.size(); ++i)
+    {
       auto c = numbers.at(i);
-      if(c != ' ') {
+      if (c != ' ')
+      {
         crates.emplace_back();
-        for(auto lineIter = input.rbegin(); lineIter != input.rend(); ++lineIter)
+        for (auto lineIter = input.rbegin(); lineIter != input.rend(); ++lineIter)
         {
           char crateChar = (*lineIter).at(i);
           if (crateChar == ' ')
@@ -44,10 +49,12 @@ class Stacks {
     }
   }
 
-  void move(Action a) {
-    while(a.n > 0) {
-      auto& fromStack = crates.at(a.from-1);
-      auto& toStack = crates.at(a.to-1);
+  void move(Action a)
+  {
+    while (a.n > 0)
+    {
+      auto &fromStack = crates.at(a.from - 1);
+      auto &toStack = crates.at(a.to - 1);
       auto tmp = fromStack.top();
       fromStack.pop();
       toStack.push(tmp);
@@ -55,39 +62,42 @@ class Stacks {
     }
   }
 
-  
-
-  void CrateMover9001(Action a) {
-    auto& fromStack = crates.at(a.from-1);
-    auto& toStack = crates.at(a.to-1);
+  void CrateMover9001(Action a)
+  {
+    auto &fromStack = crates.at(a.from - 1);
+    auto &toStack = crates.at(a.to - 1);
     std::deque<char> tinyStack;
 
-    while(a.n > 0) {
+    while (a.n > 0)
+    {
       auto tmp = fromStack.top();
       fromStack.pop();
       tinyStack.push_front(tmp);
       --a.n;
     }
 
-    for(auto bla : tinyStack) {
+    for (auto bla : tinyStack)
+    {
       toStack.push(bla);
     }
   }
 
-  void print() {
-    for(auto stack : crates) {
+  void print()
+  {
+    for (auto stack : crates)
+    {
       std::cout << stack.top();
     }
   }
 
-  private:
-    std::vector<std::stack<char>> crates;
+private:
+  std::vector<std::stack<char>> crates;
 };
-
 
 void puzzleA(Stacks stacks, std::vector<Action> actions)
 {
-  for(auto a : actions) {
+  for (auto a : actions)
+  {
     stacks.move(a);
   }
 
@@ -99,7 +109,8 @@ void puzzleA(Stacks stacks, std::vector<Action> actions)
 
 void puzzleB(Stacks stacks, std::vector<Action> actions)
 {
-  for(auto a : actions) {
+  for (auto a : actions)
+  {
     stacks.CrateMover9001(a);
   }
 
@@ -121,7 +132,7 @@ int main(int, char *[])
   std::vector<std::string> state;
   std::vector<std::string> commands;
 
-  std::vector<std::string>* pt = &state; 
+  std::vector<std::string> *pt = &state;
 
   while (std::getline(infile, line))
   {
@@ -136,7 +147,8 @@ int main(int, char *[])
   Stacks s(state);
   std::vector<Action> actions;
 
-  for(auto &a : commands) {
+  for (auto &a : commands)
+  {
     Action tmp;
     sscanf(a.c_str(), "move %d from %d to %d", &tmp.n, &tmp.from, &tmp.to);
     actions.push_back(tmp);
