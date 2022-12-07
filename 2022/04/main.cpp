@@ -14,38 +14,49 @@
 
 namespace fs = std::filesystem;
 
-class Range {
-  public:
-  Range(std::string range) {
+class Range
+{
+public:
+  Range(std::string range)
+  {
     auto split = utils::splitString(range, "-");
     from = std::stoi(split[0]);
     to = std::stoi(split[1]);
   }
 
-  bool contains(const Range& other) const {
+  bool contains(const Range &other) const
+  {
     return (from <= other.from) && (to >= other.to);
   }
 
-  static bool contains(const Range& first, const Range& second) {
-    return first.contains(second) || second.contains(first);
+  static bool contains(const std::pair<Range, Range> &pair)
+  {
+    return pair.first.contains(pair.second) || pair.second.contains(pair.first);
   }
 
-  private:
+  bool overlaps(const Range &other) const
+  {
+    return ((from <= other.from) && (to >= other.from)) || ((from <= other.to) && (to >= other.to));
+  }
+
+  static bool overlaps(const std::pair<Range, Range> &pair)
+  {
+    return pair.first.overlaps(pair.second) || pair.second.overlaps(pair.first);
+  }
+
+private:
   int from{0};
   int to{0};
 };
 
-
-void puzzleA(std::vector<std::string> inputPuzzle)
+void puzzleA(std::vector<std::pair<Range, Range>> inputPuzzle)
 {
   int count = 0;
 
-  for(auto &line: inputPuzzle) {
-    auto split = utils::splitString(line, ",");
-    Range first(split[0]);
-    Range second(split[1]);
-
-    if(Range::contains(first, second)) {
+  for (auto &pair : inputPuzzle)
+  {
+    if (Range::contains(pair))
+    {
       count++;
     }
   }
@@ -54,11 +65,20 @@ void puzzleA(std::vector<std::string> inputPuzzle)
   std::cout << "pointsA:" << count << std::endl;
 }
 
-void puzzleB(std::vector<std::string> /* inputPuzzle */)
+void puzzleB(std::vector<std::pair<Range, Range>> inputPuzzle)
 {
+  int count = 0;
 
-/*   std::cout << "---------------------" << std::endl;
-  std::cout << "pointsB:" << points << std::endl; */
+  for (auto &pair : inputPuzzle)
+  {
+    if (Range::overlaps(pair))
+    {
+      count++;
+    }
+  }
+
+  std::cout << "---------------------" << std::endl;
+  std::cout << "pointsB:" << count << std::endl;
 }
 
 int main(int, char *[])
@@ -70,7 +90,7 @@ int main(int, char *[])
   std::ifstream infile(path, std::ios::in);
   std::string line;
 
-  std::vector<std::string> input;
+  std::vector<std::pair<Range, Range>> input;
 
   while (std::getline(infile, line))
   {
@@ -79,7 +99,8 @@ int main(int, char *[])
     {
       continue;
     }
-    input.push_back(line);
+    auto split = utils::splitString(line, ",");
+    input.push_back({split[0], split[1]});
   }
 
   puzzleA(input);
