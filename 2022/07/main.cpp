@@ -72,10 +72,32 @@ void puzzleA(std::shared_ptr<Directory> node)
   std::cout << std::endl;
 }
 
-void puzzleB()
+void findB(int &result, std::shared_ptr<Directory> dir, int neededSpace)
 {
+  int dirSize = dir->getSize();
+
+  if (dirSize >= neededSpace && dirSize < result)
+  {
+    result = dirSize;
+  }
+  for (auto const &[name, subdir] : dir->subDirs)
+  {
+    findB(result, subdir, neededSpace);
+  }
+}
+
+void puzzleB(std::shared_ptr<Directory> node)
+{
+  constexpr int diskSpace   = 70000000;
+  constexpr int updateSpace = 30000000;
+  const int freeSpace = diskSpace - node->getSize();
+  const int neededSpace = updateSpace - freeSpace;
+  int result = std::numeric_limits<int>::max();
+
+  findB(result, node, neededSpace);
+  
   std::cout << "---------------------" << std::endl;
-  std::cout << "output B:";
+  std::cout << "output B:" << result;
   std::cout << std::endl;
 }
 
@@ -136,6 +158,6 @@ int main(int, char *[])
   }
 
   puzzleA(rootDir);
-  puzzleB();
+  puzzleB(rootDir);
   return 0;
 }
