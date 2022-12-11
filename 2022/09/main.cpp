@@ -15,66 +15,74 @@
 
 #include "string_utils.h"
 
-bool moveTail(int hX, int hY, int tX, int tY)
+bool isTailMoving(std::pair<int, int> head, std::pair<int, int> tail)
 {
-  return abs(hX - tX) >= 2 || abs(hY - tY) >= 2;
+  return abs(head.first - tail.first) >= 2 || abs(head.second - tail.second) >= 2;
 }
 
-void puzzleA(std::vector<std::pair<char, int>> motion)
-{
-  int tailX = 0, tailY = 0;
-  int headX = 0, headY = 0;
-  std::map<std::pair<int, int>, bool> visited;
-  visited[{tailX, tailY}] = true;
-
-  for (auto &&[dir, count] : motion)
-  {
-    for (int i = 0; i < count; ++i)
-    {
+void moveHead(std::pair<int, int>& head, char dir) {
       switch (dir)
       {
       case 'R':
-        headX++;
+        head.first++;
         break;
       case 'L':
-        headX--;
+        head.first--;
         break;
       case 'U':
-        headY++;
+        head.second++;
         break;
       case 'D':
-        headY--;
+        head.second--;
         break;
       }
+}
 
-      if (moveTail(headX, headY, tailX, tailY))
+void moveTail(std::pair<int, int> head, std::pair<int, int>& tail, char dir) {
+      if (isTailMoving(head, tail))
       {
         if (dir == 'R' || dir == 'L')
         {
-          tailY = headY;
+          tail.second = head.second;
         }
         else
         {
-          tailX = headX;
+          tail.first = head.first;
         }
 
         switch (dir)
         {
         case 'R':
-          tailX++;
+          tail.first++;
           break;
         case 'L':
-          tailX--;
+          tail.first--;
           break;
         case 'U':
-          tailY++;
+          tail.second++;
           break;
         case 'D':
-          tailY--;
+          tail.second--;
           break;
         }
-        visited[{tailX, tailY}] = true;
       }
+}
+
+void puzzleA(std::vector<std::pair<char, int>> motion)
+{
+  std::array<std::pair<int, int>, 2> knots;
+  std::map<std::pair<int, int>, bool> visited;
+  visited[{0, 0}] = true;
+
+  for (auto &&[dir, count] : motion)
+  {
+    for (int i = 0; i < count; ++i)
+    {
+      auto& head = knots[0];
+      auto& tail = knots[1];
+      moveHead(head, dir);
+      moveTail(head, tail, dir);
+      visited[tail] = true;
     }
   }
 
