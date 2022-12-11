@@ -62,6 +62,59 @@ bool visibleA(std::vector<std::vector<int>> grid, size_t x, size_t y)
   return false;
 }
 
+int scenicScore(std::vector<std::vector<int>> grid, size_t x, size_t y)
+{
+  size_t ret = 1;
+  size_t score = 1;
+
+  int treeHeight = grid[y][x];
+  // from left
+  for (score = 1; score <= x; ++score)
+  {
+    if (grid[y][x - score] >= treeHeight)
+    {
+      score++;
+      break;
+    }
+  }
+  ret *= score-1;
+
+  // from right
+  for (score = 1; score < (grid[y].size() - x); score++)
+  {
+    if (grid[y][x + score] >= treeHeight)
+    {
+      score++;
+      break;
+    }
+  }
+  ret *= score-1;
+
+  // from top
+  for (score = 1; score <= y; score++)
+  {
+    if (grid[y - score][x] >= treeHeight)
+    {
+      score++;
+      break;
+    }
+  }
+  ret *= score-1;
+
+  // from right
+  for (score = 1; score < (grid.size() - y); score++)
+  {
+    if (grid[y + score][x] >= treeHeight)
+    {
+      score++;
+      break;
+    }
+  }
+  ret *= score-1;
+
+  return ret;
+}
+
 void puzzleA(std::vector<std::vector<int>> grid)
 {
   int result = 2 * grid.size() + 2 * grid.at(0).size() - 4;
@@ -83,12 +136,19 @@ void puzzleA(std::vector<std::vector<int>> grid)
   std::cout << std::endl;
 }
 
-void puzzleB(std::vector<std::vector<int>> /* grid */)
+void puzzleB(std::vector<std::vector<int>> grid)
 {
-  int result = 0;
+  int score = 0;
+  for (size_t i = 1u; i < grid.size() - 1u; ++i)
+  {
+    for (size_t j = 1u; j < grid[i].size() - 1u; ++j)
+    {
+      score = std::max(score, scenicScore(grid, j, i));
+    }
+  }
 
   std::cout << "---------------------" << std::endl;
-  std::cout << "output B:" << result;
+  std::cout << "output B:" << score;
   std::cout << std::endl;
 }
 
