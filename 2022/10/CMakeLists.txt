@@ -4,13 +4,9 @@ set(TARGET_NAME "advent22-10")
 add_executable(${TARGET_NAME}
                 main.cpp)
 
-target_include_directories(${TARGET_NAME}
-PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../utils
-)
-
 target_link_libraries(${TARGET_NAME}
 PRIVATE
+aoc_utils
 stdc++fs)
 
 target_compile_options(${TARGET_NAME}
