@@ -60,6 +60,8 @@
         "compare": "cpp",
         "concepts": "cpp",
         "numbers": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "unordered_set": "cpp",
+        "variant": "cpp"
     }
 }
