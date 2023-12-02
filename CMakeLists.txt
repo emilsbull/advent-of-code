@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(PROJECT_NAME "advent-of-code")
 
 project(${PROJECT_NAME})
+add_subdirectory(utils)
 
-add_subdirectory(2021)
-add_subdirectory(2022)
+#add_subdirectory(2021)
+#add_subdirectory(2022)
+add_subdirectory(2023)
