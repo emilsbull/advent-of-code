@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "string_utils.h"
+#include "array_utils.h"
 
 struct PartNumber
 {
@@ -37,67 +38,10 @@ std::vector<PartNumber> parse(const std::vector<std::string>& schematic)
                     number = PartNumber();
                 }
 
-                auto hasAdiacentSign = [colMax, rowMax, schematic](size_t row, size_t col) -> bool {
-                    bool hit = false;
-
-                    if (row > 0) {
-                        if (col > 0) {
-                            // o|_|_
-                            // _|X|_
-                            // _|_|_
-                            hit |= isSign(schematic.at(row - 1).at(col - 1));
-                        }
-                        // _|o|_
-                        // _|X|_
-                        // _|_|_
-                        hit |= isSign(schematic.at(row - 1).at(col));
-                        if (col < colMax - 1) {
-                            // _|_|o
-                            // _|X|_
-                            // _|_|_
-                            hit |= isSign(schematic.at(row - 1).at(col + 1));
-                        }
-                    }
-
-                    if (col > 0) {
-                        // _|_|_
-                        // o|X|_
-                        // _|_|_
-                        hit |= isSign(schematic[row][col - 1]);
-                    }
-
-                    if (col < colMax - 1) {
-                        // _|_|_
-                        // _|X|o
-                        // _|_|_
-                        hit |= isSign(schematic[row][col + 1]);
-                    }
-
-                    if (row < rowMax - 1) {
-                        if (col > 0) {
-                            // _|_|_
-                            // _|X|_
-                            // o|_|_
-                            hit |= isSign(schematic[row + 1][col - 1]);
-                        }
-                        // _|_|_
-                        // _|X|_
-                        // _|o|_
-                        hit |= isSign(schematic[row + 1][col]);
-                        if (col < colMax - 1) {
-                            // _|_|_
-                            // _|X|_
-                            // _|_|o
-                            hit |= isSign(schematic[row + 1][col + 1]);
-                        }
-                    }
-
-                    return hit;
-                };
-
-                auto& valid = number->isValid;
-
-                valid |= hasAdiacentSign(rowCursor, colCursor);
+                bool& hit = number->isValid;
+                utils::visitAdiacent(rowCursor, colCursor, schematic, [&hit](auto c) {
+                    hit |= isSign(c);
+                });
 
             } else if (number) {
                 // number completed
