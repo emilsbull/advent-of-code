@@ -8,38 +8,56 @@
 
 #include "string_utils.h"
 
-struct Cubes
+struct Cube
 {
     int red = 0;
     int blue = 0;
     int green = 0;
 
-    bool operator<(const Cubes& c)
+    bool operator<(const Cube& c)
     {
         return (red < c.red) || (blue < c.blue) || (green < c.green);
+    }
+
+    Cube min(const Cube& o) {
+        return {std::max(red, o.red), std::max(blue, o.blue), std::max(green, o.green)};
+    }
+
+    int power() {
+        return red * blue * green;
     }
 };
 
 class Game
 {
 public:
-    Game(Cubes limit)
+    Game(Cube limit)
         : mLimit(limit){
 
           };
-    Cubes mLimit;
+    Cube mLimit;
     int ID = 0;
-    std::vector<Cubes> picks;
+    std::vector<Cube> picks;
 
     bool possible()
     {
         bool win = true;
-        std::for_each(picks.cbegin(), picks.cend(), [&win, this](const Cubes& other) {
+        std::for_each(picks.cbegin(), picks.cend(), [&win, this](const Cube& other) {
             if (this->mLimit < other) {
                 win = false;
             }
         });
         return win;
+    }
+
+    Cube minSet() {
+        Cube ret;
+
+        for(auto & pick: picks) {
+            ret = ret.min(pick);
+        }
+
+        return ret;
     }
 };
 
@@ -57,7 +75,7 @@ Game parse(std::string input)
     auto picks = utils::splitString(split.at(1), ";");
 
     for (auto pick : picks) {
-        Cubes cubes;
+        Cube cubes;
         auto in = utils::splitString(pick, ",");
         for (auto col : in) {
             col = utils::trim(col);
@@ -82,11 +100,19 @@ Game parse(std::string input)
 void puzzle(const std::vector<std::string>& commands)
 {
     int sum = 0;
+    int power = 0;
+    std::vector<Game> games;
+
+
     for (auto& command : commands) {
-        Game g = parse(command);
+        games.emplace_back(parse(command));
+    }
+
+    for (auto& g : games) {
         if (g.possible()) {
             sum += g.ID;
         }
+        power += g.minSet().power();
     }
     std::cout << "---------------------" << std::endl;
     std::cout << "output A:" << sum;
@@ -94,7 +120,7 @@ void puzzle(const std::vector<std::string>& commands)
 
     std::cout << "---------------------" << std::endl;
     std::cout << "output b:"
-              << "sum";
+              << power;
     std::cout << std::endl;
 }
 
