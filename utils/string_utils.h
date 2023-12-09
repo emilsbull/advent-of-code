@@ -34,12 +34,10 @@ namespace utils
 
         auto start = 0U;
         auto end = input.find(delimiter);
-        while (end != std::string::npos)
-        {
+        while (end != std::string::npos) {
             auto substr = input.substr(start, end - start);
             trim(substr);
-            if (substr.size() > 0)
-            {
+            if (substr.size() > 0) {
                 result.push_back(substr);
             }
             start = end + delimiter.length();
@@ -47,12 +45,11 @@ namespace utils
         }
         auto substr = input.substr(start, end - start);
         trim(substr);
-        if (substr.size() > 0)
-        {
+        if (substr.size() > 0) {
             result.push_back(substr);
         }
         return result;
     }
-}
+}  // namespace utils
 
-#endif // STRING_UTILS_H
+#endif  // STRING_UTILS_H
