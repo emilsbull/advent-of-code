@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <functional>
 #include <optional>
+#include <numeric>
 #include <cmath>
 
 #include "array_utils.h"
@@ -17,10 +18,25 @@
 
 std::pair<int, int> parse(const std::vector<std::string>& input)
 {
+    // ##### evaluate
+
     int sumA{0};
 
+    // -------
+
+    int sumB{0};
+
+    std::vector<int> amountCards(input.size(), 1);
+
     for (auto& line : input) {
-        std::string scrachboard = utils::splitString(line, ":").at(1);
+        auto firstSplit = utils::splitString(line, ":");
+
+        int cardNo;
+        std::string dummy;
+        std::stringstream ss(firstSplit.at(0));
+        ss >> dummy >> cardNo;
+
+        std::string scrachboard = firstSplit.at(1);
         auto s = utils::splitString(scrachboard, "|");
         std::string numbersStr = s.at(0);
         std::string winningNumbersStr = s.at(1);
@@ -28,7 +44,8 @@ std::pair<int, int> parse(const std::vector<std::string>& input)
         int num{0};
         std::set<int> winningNumbers;
         // read set of winning numbers
-        std::stringstream ss(winningNumbersStr);
+        ss.clear();
+        ss.str(winningNumbersStr);
         while (ss >> num) {
             winningNumbers.insert(num);
         }
@@ -46,13 +63,16 @@ std::pair<int, int> parse(const std::vector<std::string>& input)
         // if any number is a winning number, get points
         if (correctNumbers > 0)
             sumA += std::pow(2, correctNumbers - 1);
+
+        // [b] how many of the current cards do i have?
+        int amountCurrentCards = amountCards[cardNo-1];
+        for(int i = 0; i < correctNumbers; ++i) {
+            // [b] add to the subsequent cards
+            amountCards[cardNo + i] += amountCurrentCards;
+        }
     }
 
-    // ##### evaluate
-
-    // -------
-
-    int sumB{0};
+    sumB = std::accumulate(amountCards.begin(), amountCards.end(), 0);
 
     return {sumA, sumB};
 }
