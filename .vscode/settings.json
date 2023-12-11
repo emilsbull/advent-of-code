@@ -55,5 +55,7 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "set": "cpp"
-    }
+    },
+    "cmake.options.statusBarVisibility": "visible",
+    "files.insertFinalNewline": true
 }
