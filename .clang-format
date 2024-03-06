@@ -1,7 +1,6 @@
 ---
 BasedOnStyle: Google
 Language: Cpp
-Standard: Cpp03
 TabWidth: 4
 UseTab: Never
 ColumnLimit: 120
@@ -27,6 +26,6 @@ AllowShortLoopsOnASingleLine: false
 
 AlignTrailingComments: true
 ReflowComments: false
-SortIncludes: false
+SortIncludes: true
 
 ...
