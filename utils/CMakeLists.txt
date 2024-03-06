@@ -14,6 +14,9 @@ target_compile_options(${TARGET_NAME}
 INTERFACE
     -std=c++20
 )
+target_link_libraries(${TARGET_NAME}
+INTERFACE
+    stdc++fs)
 
 install(
 TARGETS ${TARGET_NAME}

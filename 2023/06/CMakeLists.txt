@@ -3,7 +3,7 @@ set(TARGET_NAME "advent23-06")
 
 add_executable(${TARGET_NAME}
                 main.cpp)
-                
+
 target_link_libraries(${TARGET_NAME}
 PUBLIC
     aoc_utils

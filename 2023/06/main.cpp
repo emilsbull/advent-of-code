@@ -1,7 +1,5 @@
 #include <sstream>
-
 #include <vector>
-
 #include <cmath>
 
 #include "string_utils.h"
@@ -35,29 +33,52 @@ int main()
     const std::string file{(realPuzzle ? "input1.txt" : "input.txt")};
 
     std::vector<std::string> input = utils::getInput(file);
+    if(input.size() < 2) {
+        std::cout << "error parsing input size: " << input.size() << std::endl;
+    }
 
-    auto toNumbers = [](const std::string& line) -> std::vector<uint64_t> {
-        std::vector<uint64_t> numbers;
-        auto numIn = utils::splitString(line, ":").at(1);
-
-        std::istringstream iss{numIn};
-
-        uint64_t x;
-        while (iss >> x) {
-            numbers.push_back(x);
-        }
-        return numbers;
-    };
     {
         // part 1
-        std::vector<uint64_t> times = toNumbers(input.at(0));
-        std::vector<uint64_t> distances = toNumbers(input.at(1));
+        auto toNumbers = [](const std::string& line) -> std::vector<uint64_t> {
+            std::vector<uint64_t> numbers;
+            auto numIn = utils::splitString(line, ":").at(1);
+
+            std::istringstream iss{numIn};
+
+            uint64_t x;
+            while (iss >> x) {
+                numbers.push_back(x);
+            }
+            return numbers;
+        };
+
+        std::vector<uint64_t> times = toNumbers(input[0]);
+        std::vector<uint64_t> distances = toNumbers(input[1]);
+
         uint64_t p{1};
         for (size_t i = 0; i < times.size(); ++i) {
             p *= formula::count_solutions(times[i], distances[i]);
         }
         part1 = p;
     }
+
+    {
+        auto toNumber = [](const std::string& line) -> uint64_t {
+            uint64_t n{};
+            for (const auto c : line) {
+                if (std::isdigit(c)) {
+                    n = n * 10 + c - '0';
+                }
+            }
+            return n;
+        };
+
+        auto time = toNumber(input[0]);
+        auto distance = toNumber(input[1]);
+        
+        part2 = formula::count_solutions(time, distance);
+    }
+
     std::cout << "Part 1: " << part1 << std::endl;
     std::cout << "Part 2: " << part2 << std::endl;
 }
