@@ -39,10 +39,10 @@ int main()
             auto action = navigation[cursor++];
             if (cursor >= navigation.size())
                 cursor = 0u;
-            if(action == 'L')
-            currentNode = tree[currentNode].first;
-            else 
-            currentNode = tree[currentNode].second;
+            if (action == 'L')
+                currentNode = tree[currentNode].first;
+            else
+                currentNode = tree[currentNode].second;
             iteration++;
         }
         part1 = iteration;
@@ -50,6 +50,38 @@ int main()
 
     {
         // part 2
+        std::vector<std::string> startNodes, endNodes;
+        for (auto [key, _] : tree) {
+            if (key[2] == 'A') {
+                startNodes.push_back(key);
+            }
+            if (key[2] == 'Z') {
+                endNodes.push_back(key);
+            }
+        }
+
+        std::vector<int> cycles(startNodes.size());
+        auto cIdx = 0u;
+
+        for (auto start : startNodes) {
+            std::string currentNode = start;
+            auto cursor = 0u;
+            while (std::ranges::find(endNodes, currentNode) == endNodes.end()) {
+                auto action = navigation[cursor++];
+                if (cursor >= navigation.size())
+                    cursor = 0u;
+                if (action == 'L')
+                    currentNode = tree[currentNode].first;
+                else
+                    currentNode = tree[currentNode].second;
+                cycles[cIdx]++;
+            }
+            cIdx++;
+        }
+        part2 = 1;
+        for (size_t i = 0; i < cycles.size(); ++i) {
+            part2 = std::lcm(part2, cycles[i]);
+        }
     }
 
     std::cout << "Part 1: " << part1 << std::endl;
