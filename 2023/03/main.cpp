@@ -1,18 +1,14 @@
 #include <fstream>
-#include <iostream>
-#include <sstream>
-
-#include <vector>
-#include <set>
-#include <map>
-
-#include <algorithm>
 #include <functional>
+#include <iostream>
+#include <map>
 #include <optional>
-
-#include "array_utils.h"
-#include "map_utils.h"
-#include "string_utils.h"
+#include <set>
+#include <vector>
+#include "utils/array_utils.h"
+#include "utils/fileinput.h"
+#include "utils/map_utils.h"
+#include "utils/string_utils.h"
 
 struct PartNumber
 {
@@ -114,13 +110,17 @@ void puzzle(const std::vector<std::string>& commands)
     std::cout << std::endl;
 }
 
-int main(int, char*[])
+int main(int /*argc*/, char* argv[])
 {
-    constexpr bool realPuzzle = true;
+    constexpr bool realPuzzle = false;
     const std::string file{(realPuzzle ? "input1.txt" : "input.txt")};
 
-    const std::string path{file};
-    std::ifstream infile(path, std::ios::in);
+    std::string file_path = utils::getInputFilePath(argv[0], file);
+    if (file_path.empty()) {
+        std::cerr << "Error: Could not determine the input file path for " << file_path << ".\n";
+        return 1;
+    }
+    std::ifstream infile(file_path, std::ios::in);
     std::string line;
 
     std::vector<std::string> commands;

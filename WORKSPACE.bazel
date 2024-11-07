@@ -1,0 +1,25 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "rules_cc",
+    url = "https://github.com/bazelbuild/rules_cc/releases/download/0.0.9/rules_cc-0.0.9.tar.gz",
+    sha256 = "2037875b9a4456dce4a79d112a8ae885bbc4aad968e6587dca6e64f3a0900cdf",
+    strip_prefix = "rules_cc-0.0.9",
+)
+
+http_archive(
+    name = "rules_java",
+    url = "https://github.com/bazelbuild/rules_java/releases/download/7.3.1/rules_java-7.3.1.tar.gz",
+    sha256 = "4018e97c93f97680f1650ffd2a7530245b864ac543fd24fae8c02ba447cb2864",
+)
+load("@rules_java//java:repositories.bzl", "rules_java_dependencies", "rules_java_toolchains")
+rules_java_dependencies()
+rules_java_toolchains()
+
+http_archive(
+  name = "com_google_googletest",
+  url = "https://github.com/google/googletest/archive/refs/tags/release-1.8.1.zip",
+  sha256 = "927827c183d01734cc5cfef85e0ff3f5a92ffe6188e0d18e909c5efebf28a0c7",
+  strip_prefix = "googletest-release-1.8.1",
+)
+

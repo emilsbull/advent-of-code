@@ -1,0 +1,5 @@
+build --cxxopt="-std=c++20"
+build --cxxopt="-Wall"
+build --cxxopt="-Wpedantic"
+build --cxxopt="-Wextra"
+build --test_output=errors

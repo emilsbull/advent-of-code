@@ -1,0 +1,52 @@
+# Define checks
+# 1. Disable all checks: -*
+# 2. Enable checks
+# Checks which stem from the Coding Guideline
+# - R217 (Magic Numbers): readability-magic-numbers
+# - R270 (Naming Overview): readability-identifier-naming
+# -readability-avoid-const-params-in-decls
+Checks: >
+  -*,
+  boost-use-to-string,
+  bugprone-*,
+  -bugprone-dynamic-static-initializers,
+  -bugprone-easily-swappable-parameters,
+  cert-*,
+  cppcoreguidelines-*,
+  fuchsia-trailing-return,
+  google-*,
+  hicpp-*,
+  misc-*,
+  modernize-*,
+  -modernize-unary-static-assert,
+  -modernize-use-auto,
+  -modernize-use-constraints,
+  -modernize-use-designated-initializers,
+  -modernize-use-nodiscard,
+  -modernize-use-std-format,
+  -modernize-use-trailing-return-type,
+  performance-*,
+  portability-*,
+  -portability-simd-intrinsics,
+  readability-*,
+  -readability-identifier-length,
+  -readability-operators-representation,
+  -readability-suspicious-call-argument,
+
+# Turn all the warnings from the checks above into errors.
+WarningsAsErrors: "*, -clang-diagnostic-error"
+
+CheckOptions:
+  - { key: readability-identifier-naming.NamespaceCase,          value: lower_case }
+  - { key: readability-identifier-naming.ClassCase,              value: CamelCase  }
+  - { key: readability-identifier-naming.StructCase,             value: CamelCase  }
+  - { key: readability-identifier-naming.TemplateParameterCase,  value: CamelCase  }
+  - { key: readability-identifier-naming.FunctionCase,           value: camelBack  }
+  - { key: readability-identifier-naming.VariableCase,           value: camelBack }
+  - { key: readability-identifier-naming.ClassMemberPrefix,      value: m          }
+  - { key: readability-identifier-naming.MacroDefinitionCase,    value: UPPER_CASE }
+  - { key: readability-identifier-naming.EnumConstantCase,         value: UPPER_CASE }
+  - { key: readability-identifier-naming.ConstexprVariableCase,    value: CamelCase }
+  - { key: readability-identifier-naming.GlobalConstantCase,       value: CamelCase }
+  - { key: readability-identifier-naming.MemberConstantCase,       value: camelBack }
+  - { key: readability-identifier-naming.StaticConstantCase,       value: CamelCase }

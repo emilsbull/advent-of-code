@@ -1,12 +1,11 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <vector>
-#include <ranges>
-#include <array>
-#include <algorithm>
 #include <sstream>
+#include <vector>
 
-#include "string_utils.h"
+#include "utils/fileinput.h"
+#include "utils/string_utils.h"
 
 struct Cube
 {
@@ -19,11 +18,13 @@ struct Cube
         return (red < c.red) || (blue < c.blue) || (green < c.green);
     }
 
-    Cube min(const Cube& o) {
+    Cube min(const Cube& o)
+    {
         return {std::max(red, o.red), std::max(blue, o.blue), std::max(green, o.green)};
     }
 
-    int power() {
+    int power()
+    {
         return red * blue * green;
     }
 };
@@ -50,10 +51,11 @@ public:
         return win;
     }
 
-    Cube minSet() {
+    Cube minSet()
+    {
         Cube ret;
 
-        for(auto & pick: picks) {
+        for (auto& pick : picks) {
             ret = ret.min(pick);
         }
 
@@ -103,7 +105,6 @@ void puzzle(const std::vector<std::string>& commands)
     int power = 0;
     std::vector<Game> games;
 
-
     for (auto& command : commands) {
         games.emplace_back(parse(command));
     }
@@ -119,18 +120,21 @@ void puzzle(const std::vector<std::string>& commands)
     std::cout << std::endl;
 
     std::cout << "---------------------" << std::endl;
-    std::cout << "output b:"
-              << power;
+    std::cout << "output b:" << power;
     std::cout << std::endl;
 }
 
-int main(int, char*[])
+int main(int /*argc*/, char* argv[])
 {
-    constexpr bool realPuzzle = true;
+    constexpr bool realPuzzle = false;
     const std::string file{(realPuzzle ? "input1.txt" : "input.txt")};
 
-    const std::string path{file};
-    std::ifstream infile(path, std::ios::in);
+    std::string file_path = utils::getInputFilePath(argv[0], file);
+    if (file_path.empty()) {
+        std::cerr << "Error: Could not determine the input file path for " << file_path << ".\n";
+        return 1;
+    }
+    std::ifstream infile(file_path, std::ios::in);
     std::string line;
 
     std::vector<std::string> commands;
