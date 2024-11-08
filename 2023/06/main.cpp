@@ -2,8 +2,9 @@
 #include <vector>
 #include <cmath>
 
-#include "string_utils.h"
-#include "input_helpers.h"
+#include "utils/string_utils.h"
+#include "utils/input_helpers.h"
+#include "utils/fileinput.h"
 
 namespace formula
 {
@@ -24,15 +25,21 @@ namespace formula
     }
 }  // namespace formula
 
-int main()
+int main(int /*argc*/, char* argv[])
 {
-    int64_t part1 = 0;
-    int64_t part2 = 0;
-
     constexpr bool realPuzzle = true;
     const std::string file{(realPuzzle ? "input1.txt" : "input.txt")};
 
-    std::vector<std::string> input = utils::getInput(file);
+    std::string file_path = utils::getInputFilePath(argv[0], file);
+    if (file_path.empty()) {
+        std::cerr << "Error: Could not determine the input file path for " << file_path << ".\n";
+        return 1;
+    }
+
+    int64_t part1 = 0;
+    int64_t part2 = 0;
+
+    std::vector<std::string> input = utils::getInput(file_path);
     if(input.size() < 2) {
         std::cout << "error parsing input size: " << input.size() << std::endl;
     }

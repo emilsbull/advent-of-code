@@ -12,9 +12,10 @@
 #include <numeric>
 #include <cmath>
 
-#include "array_utils.h"
-#include "map_utils.h"
-#include "string_utils.h"
+#include "utils/array_utils.h"
+#include "utils/map_utils.h"
+#include "utils/string_utils.h"
+#include "utils/fileinput.h"
 
 std::pair<int, int> parse(const std::vector<std::string>& input)
 {
@@ -90,13 +91,17 @@ void puzzle(const std::vector<std::string>& commands)
     std::cout << std::endl;
 }
 
-int main(int, char*[])
+int main(int /*argc*/, char* argv[])
 {
     constexpr bool realPuzzle = true;
     const std::string file{(realPuzzle ? "input1.txt" : "input.txt")};
 
-    const std::string path{file};
-    std::ifstream infile(path, std::ios::in);
+    std::string file_path = utils::getInputFilePath(argv[0], file);
+    if (file_path.empty()) {
+        std::cerr << "Error: Could not determine the input file path for " << file_path << ".\n";
+        return 1;
+    }
+    std::ifstream infile(file_path, std::ios::in);
     std::string line;
 
     std::vector<std::string> commands;

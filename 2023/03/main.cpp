@@ -112,7 +112,7 @@ void puzzle(const std::vector<std::string>& commands)
 
 int main(int /*argc*/, char* argv[])
 {
-    constexpr bool realPuzzle = false;
+    constexpr bool realPuzzle = true;
     const std::string file{(realPuzzle ? "input1.txt" : "input.txt")};
 
     std::string file_path = utils::getInputFilePath(argv[0], file);

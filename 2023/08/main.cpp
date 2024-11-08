@@ -1,25 +1,31 @@
-#include <algorithm>
-#include <array>
 #include <cmath>
-#include <istream>
+#include <iostream>
 #include <map>
-#include <sstream>
+#include <numeric>
+#include <string>
 #include <utility>
 #include <vector>
 
-#include "input_helpers.h"
-#include "map_utils.h"
-#include "string_utils.h"
+#include "utils/fileinput.h"
+#include "utils/input_helpers.h"
+#include "utils/map_utils.h"
+#include "utils/string_utils.h"
 
-int main()
+int main(int /*argc*/, char* argv[])
 {
-    int64_t part1 = 0;
-    int64_t part2 = 0;
-
     constexpr bool realPuzzle = true;
     const std::string file{(realPuzzle ? "input1.txt" : "input.txt")};
 
-    std::vector<std::string> input = utils::getInput(file);
+    std::string file_path = utils::getInputFilePath(argv[0], file);
+    if (file_path.empty()) {
+        std::cerr << "Error: Could not determine the input file path for " << file_path << ".\n";
+        return 1;
+    }
+
+    int64_t part1 = 0;
+    int64_t part2 = 0;
+
+    std::vector<std::string> input = utils::getInput(file_path);
     std::map<std::string, std::pair<std::string, std::string>> tree;
     std::string navigation = input.front();
 
@@ -35,7 +41,7 @@ int main()
         std::string currentNode = "AAA";
         auto iteration = 0;
         auto cursor = 0u;
-        while (currentNode.compare("ZZZ") != 0) {
+        while (currentNode != "ZZZ") {
             auto action = navigation[cursor++];
             if (cursor >= navigation.size())
                 cursor = 0u;
@@ -50,7 +56,8 @@ int main()
 
     {
         // part 2
-        std::vector<std::string> startNodes, endNodes;
+        std::vector<std::string> startNodes;
+        std::vector<std::string> endNodes;
         for (auto [key, _] : tree) {
             if (key[2] == 'A') {
                 startNodes.push_back(key);
@@ -63,7 +70,7 @@ int main()
         std::vector<int> cycles(startNodes.size());
         auto cIdx = 0u;
 
-        for (auto start : startNodes) {
+        for (const auto& start : startNodes) {
             std::string currentNode = start;
             auto cursor = 0u;
             while (std::ranges::find(endNodes, currentNode) == endNodes.end()) {
@@ -79,8 +86,8 @@ int main()
             cIdx++;
         }
         part2 = 1;
-        for (size_t i = 0; i < cycles.size(); ++i) {
-            part2 = std::lcm(part2, cycles[i]);
+        for (int& cycle : cycles) {
+            part2 = std::lcm(part2, cycle);
         }
     }
 

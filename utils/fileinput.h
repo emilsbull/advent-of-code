@@ -1,8 +1,10 @@
 #ifndef FILEINPUT_H
 #define FILEINPUT_H
 
-#include <string>
+#include <iostream>
+#include <memory>
 #include <regex>
+#include <string>
 
 #include "tools/cpp/runfiles/runfiles.h"
 

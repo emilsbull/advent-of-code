@@ -12,10 +12,11 @@
 #include <numeric>
 #include <cmath>
 
-#include "array_utils.h"
-#include "map_utils.h"
-#include "string_utils.h"
-#include "input_helpers.h"
+#include "utils/array_utils.h"
+#include "utils/map_utils.h"
+#include "utils/string_utils.h"
+#include "utils/input_helpers.h"
+#include "utils/fileinput.h"
 
 std::vector<int64_t> getSeedsPart1(const std::string& line)
 {
@@ -83,15 +84,21 @@ std::vector<std::vector<Map> > getMaps(const std::vector<std::string>& input)
     return maps;
 }
 
-int main()
+int main(int /*argc*/, char* argv[])
 {
-    int64_t part1 = 0;
-    int64_t part2 = 0;
-
     constexpr bool realPuzzle = true;
     const std::string file{(realPuzzle ? "input1.txt" : "input.txt")};
 
-    std::vector<std::string> input = utils::getInput(file);
+    std::string file_path = utils::getInputFilePath(argv[0], file);
+    if (file_path.empty()) {
+        std::cerr << "Error: Could not determine the input file path for " << file_path << ".\n";
+        return 1;
+    }
+
+    int64_t part1 = 0;
+    int64_t part2 = 0;
+
+    std::vector<std::string> input = utils::getInput(file_path);
 
     std::vector<std::vector<Map> > maps = getMaps(input);
 
