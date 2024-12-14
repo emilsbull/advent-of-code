@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "debug app",
+            "type": "cppdbg",
+            "preLaunchTask": "build_debug",
+            "request": "launch",
+            "program": "${workspaceFolder}/bazel-bin/2024/02/01",
+            "cwd": "${workspaceFolder}/bazel-bin/2024/02/01.runfiles/__main__",
+            "linux": {
+                "sourceFileMap": {
+                    "/proc/self/cwd": "${workspaceFolder}",
+                }
+            }
+        }
+    ]
+}
